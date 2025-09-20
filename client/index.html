@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dear Diary</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+DE+Grund:wght@100..400&family=Playwrite+US+Trad:wght@100..400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="diary-book">
+        <div class="book-spine">
+            <h1>Dear Diary</h1>
+        </div>
+        
+        <div class="book-pages">
+            <!-- Left Page -->
+            <div class="page left-page">
+                <div class="page-header">
+                    <div class="date-display" id="current-date"></div>
+                    <div class="page-number">1</div>
+                </div>
+                
+                <div class="page-content">
+                    <div class="logo-container">
+                        <div class="diary-logo">Dear Diary</div>
+                    </div>
+                    
+                    <div class="navigation-menu">
+                        <ul>
+                            <li><a href="#" id="new-entry-link" class="nav-link active">New Entry</a></li>
+                            <li><a href="#" id="entries-link" class="nav-link">My Entries</a></li>
+                            <li><a href="#" id="goals-link" class="nav-link">My Goals</a></li>
+                            <li><a href="#" id="analytics-link" class="nav-link">Insights</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="quote-section">
+                        <blockquote>
+                            "A journal is a place to record your thoughts, feelings, and experiences. 
+                            It's a safe space where you can be completely honest with yourself."
+                        </blockquote>
+                    </div>
+                </div>
+                
+                <div class="page-footer">
+                    <div class="footer-decoration"></div>
+                </div>
+            </div>
+            
+            <!-- Right Page -->
+            <div class="page right-page">
+                <div class="page-header">
+                    <div class="page-title" id="page-title">New Entry</div>
+                    <div class="page-number">2</div>
+                </div>
+                
+                <div class="page-content">
+                    <!-- New Entry Section -->
+                    <section id="new-entry-section" class="content-section active">
+                        <div class="prompt-container">
+                            <div class="prompt-card">
+                                <h3>Today's Prompt</h3>
+                                <p id="daily-prompt" class="prompt-text">Loading today's prompt...</p>
+                                <div class="prompt-controls">
+                                    <select id="prompt-category" class="prompt-category-select">
+                                        <option value="">All Categories</option>
+                                    </select>
+                                    <button id="refresh-prompt-btn" class="refresh-btn">New Prompt</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form id="diary-form" class="entry-form">
+                            <div class="form-group">
+                                <textarea id="entry-content" class="entry-textarea" placeholder="Dear Diary, today I..." rows="10" required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">Save Entry</button>
+                            </div>
+                        </form>
+                        
+                        <div id="support-response" class="support-response hidden"></div>
+                    </section>
+                    
+                    <!-- Entries Section -->
+                    <section id="entries-section" class="content-section hidden">
+                        <div id="entries-list" class="entries-container"></div>
+                    </section>
+                    
+                    <!-- Goals Section -->
+                    <section id="goals-section" class="content-section hidden">
+                        <div class="goals-controls">
+                            <button id="new-goal-btn" class="new-goal-btn">Create New Goal</button>
+                        </div>
+                        
+                        <div id="goals-list" class="goals-container"></div>
+                        
+                        <div id="goal-form-section" class="goal-form-container hidden">
+                            <div class="section-header">
+                                <h3>Create New Goal</h3>
+                            </div>
+                            <form id="goal-form" class="goal-form">
+                                <div class="form-group">
+                                    <input type="text" id="goal-title" class="goal-input" placeholder="Goal Title" required>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="goal-description" class="goal-textarea" placeholder="Goal Description" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="goal-target-date" class="goal-label">Target Date:</label>
+                                    <input type="date" id="goal-target-date" class="goal-date-input">
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="submit-btn">Save Goal</button>
+                                    <button type="button" id="cancel-goal-btn" class="cancel-btn">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                    
+                    <!-- Analytics Section -->
+                    <section id="analytics-section" class="content-section hidden">
+                        <div id="analytics-chart" class="analytics-container"></div>
+                    </section>
+                </div>
+                
+                <div class="page-footer">
+                    <div class="footer-decoration"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

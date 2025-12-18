@@ -13,7 +13,7 @@ router.post('/entries', async (req, res) => {
     const emotionAnalysis = analyzeEmotion(content);
     
     // Generate personalized support response
-    const supportResponse = generatePersonalizedResponse(emotionAnalysis);
+    const supportResponse = generatePersonalizedResponse(emotionAnalysis, content);
     
     // Create entry object
     const entry = {

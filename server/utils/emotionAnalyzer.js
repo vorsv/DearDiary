@@ -9,7 +9,8 @@ const analyzer = new natural.SentimentAnalyzer('English',
 // Function to analyze emotion in text
 function analyzeEmotion(text) {
   // Tokenize the text
-  const tokens = natural.WordTokenizer().tokenize(text);
+  const tokenizer = new natural.WordTokenizer();
+  const tokens = tokenizer.tokenize(text);
   
   // Calculate sentiment score
   const score = analyzer.getSentiment(tokens);

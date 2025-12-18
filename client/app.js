@@ -31,8 +31,20 @@ const goalTargetDate = document.getElementById('goal-target-date');
 const cancelGoalBtn = document.getElementById('cancel-goal-btn');
 const goalsList = document.getElementById('goals-list');
 
+// Menu elements
+const sideMenu = document.getElementById('side-menu');
+const menuToggle = document.getElementById('menu-toggle');
+const closeMenuBtn = document.getElementById('close-menu-btn');
+const recentEntriesMenu = document.getElementById('recent-entries-menu');
+
+// Page elements
+const leftPage = document.querySelector('.page.left-page');
+const rightPage = document.querySelector('.page.right-page');
+const prevPageBtn = document.getElementById('prev-page-btn');
+const nextPageBtn = document.getElementById('next-page-btn');
+
 // Navigation elements
-const navLinks = document.querySelectorAll('.nav-link');
+const menuLinks = document.querySelectorAll('.menu-link');
 
 // Set current date
 const currentDateElement = document.getElementById('current-date');
@@ -65,6 +77,14 @@ analyticsLink.addEventListener('click', (e) => {
 refreshPromptBtn.addEventListener('click', loadDailyPrompt);
 promptCategory.addEventListener('change', loadDailyPrompt);
 
+// Menu event listeners
+menuToggle.addEventListener('click', toggleMenu);
+closeMenuBtn.addEventListener('click', closeMenu);
+
+// Page flipping event listeners
+prevPageBtn.addEventListener('click', flipToPrevPage);
+nextPageBtn.addEventListener('click', flipToNextPage);
+
 diaryForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -89,6 +109,9 @@ diaryForm.addEventListener('submit', async (e) => {
             
             // Show success message
             showTemporaryMessage('Diary entry saved successfully!', 'success');
+            
+            // Update recent entries menu
+            updateRecentEntriesMenu();
         } else {
             const error = await response.json();
             console.error('Error saving entry:', error);
@@ -175,13 +198,13 @@ function showSection(section, link, title) {
     goalsSection.classList.add('hidden');
     analyticsSection.classList.add('hidden');
     
-    // Remove active class from all nav links
-    navLinks.forEach(navLink => navLink.classList.remove('active'));
+    // Remove active class from all menu links
+    menuLinks.forEach(menuLink => menuLink.classList.remove('active'));
     
     // Show the selected section
     section.classList.remove('hidden');
     
-    // Add active class to clicked nav link
+    // Add active class to clicked menu link
     link.classList.add('active');
     
     // Update page title
@@ -197,6 +220,19 @@ function showSection(section, link, title) {
         loadDailyPrompt();
         loadPromptCategories();
     }
+    
+    // Close menu on mobile
+    if (window.innerWidth <= 768) {
+        closeMenu();
+    }
+}
+
+function toggleMenu() {
+    sideMenu.classList.toggle('open');
+}
+
+function closeMenu() {
+    sideMenu.classList.remove('open');
 }
 
 function showTemporaryMessage(message, type) {
@@ -218,6 +254,38 @@ function showTemporaryMessage(message, type) {
     setTimeout(() => {
         messageElement.remove();
     }, 3000);
+}
+
+function flipToNextPage() {
+    // Add flipping class to trigger animation
+    leftPage.classList.add('flipping');
+    rightPage.classList.add('flipping');
+    
+    // Add flip-next class for next page animation
+    leftPage.classList.add('flip-next');
+    rightPage.classList.add('flip-next');
+    
+    // Reset after animation completes
+    setTimeout(() => {
+        leftPage.classList.remove('flipping', 'flip-next');
+        rightPage.classList.remove('flipping', 'flip-next');
+    }, 800);
+}
+
+function flipToPrevPage() {
+    // Add flipping class to trigger animation
+    leftPage.classList.add('flipping');
+    rightPage.classList.add('flipping');
+    
+    // Add flip-prev class for previous page animation
+    leftPage.classList.add('flip-prev');
+    rightPage.classList.add('flip-prev');
+    
+    // Reset after animation completes
+    setTimeout(() => {
+        leftPage.classList.remove('flipping', 'flip-prev');
+        rightPage.classList.remove('flipping', 'flip-prev');
+    }, 800);
 }
 
 async function loadDailyPrompt() {
@@ -270,19 +338,32 @@ function displaySupportResponse(supportData) {
         return;
     }
     
-    let responseHTML = `<h3>Your Personalized Support</h3>`;
-    responseHTML += `<p><strong>${supportData.message}</strong></p>`;
+    let responseHTML = `
+        <div class="support-header">
+            <h3>Your Personal Reflection</h3>
+            <div class="japanese-element">侘寂 (Wabi-Sabi)</div>
+        </div>
+        <div class="support-content">
+            <p class="wisdom-message">${supportData.message}</p>
+            ${supportData.emotionInsight ? `<p class="emotion-insight">${supportData.emotionInsight}</p>` : ''}
+            ${supportData.reflectionQuestion ? `<p class="reflection-question"><strong>For your reflection:</strong> ${supportData.reflectionQuestion}</p>` : ''}
+            ${supportData.encouragement ? `<p class="encouragement"><em>${supportData.encouragement}</em></p>` : ''}
+        </div>
+    `;
     
     if (supportData.resources && supportData.resources.length > 0) {
-        responseHTML += '<h4>Helpful Resources:</h4><ul>';
+        responseHTML += `
+            <div class="resources-section">
+                <h4>Gentle Suggestions</h4>
+                <ul class="resources-list">
+        `;
         supportData.resources.forEach(resource => {
             responseHTML += `<li>${resource}</li>`;
         });
-        responseHTML += '</ul>';
-    }
-    
-    if (supportData.encouragement) {
-        responseHTML += `<p><em>${supportData.encouragement}</em></p>`;
+        responseHTML += `
+                </ul>
+            </div>
+        `;
     }
     
     supportResponse.innerHTML = responseHTML;
@@ -296,6 +377,7 @@ async function loadEntries() {
         if (response.ok) {
             const entries = await response.json();
             displayEntries(entries);
+            updateRecentEntriesMenu(entries);
         } else {
             console.error('Failed to load entries');
             entriesList.innerHTML = '<p class="error-message">Failed to load diary entries.</p>';
@@ -498,8 +580,57 @@ function displayAnalytics(entries) {
     analyticsChart.innerHTML = chartHTML;
 }
 
-// Load daily prompt when page loads
+function updateRecentEntriesMenu(entries = null) {
+    // If entries weren't passed, fetch them
+    if (!entries) {
+        fetch('/api/diary/entries')
+            .then(response => response.json())
+            .then(entries => {
+                populateRecentEntriesMenu(entries);
+            })
+            .catch(error => {
+                console.error('Error loading recent entries:', error);
+                recentEntriesMenu.innerHTML = '<li class="error-message">Failed to load entries</li>';
+            });
+    } else {
+        populateRecentEntriesMenu(entries);
+    }
+}
+
+function populateRecentEntriesMenu(entries) {
+    if (entries.length === 0) {
+        recentEntriesMenu.innerHTML = '<li class="empty-message">No entries yet</li>';
+        return;
+    }
+    
+    // Show only the 5 most recent entries
+    const recentEntries = entries.slice(0, 5);
+    
+    recentEntriesMenu.innerHTML = recentEntries.map(entry => {
+        const entryDate = new Date(entry.date);
+        const formattedDate = entryDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric'
+        });
+        
+        return `<li data-id="${entry.id}">${formattedDate}: ${entry.content.substring(0, 30)}${entry.content.length > 30 ? '...' : ''}</li>`;
+    }).join('');
+    
+    // Add click event listeners to recent entries
+    document.querySelectorAll('#recent-entries-menu li').forEach(item => {
+        item.addEventListener('click', (e) => {
+            const entryId = e.target.dataset.id;
+            if (entryId) {
+                // In a full implementation, you would show the entry details
+                showTemporaryMessage('Entry selected! In a full implementation, this would show the entry details.', 'success');
+            }
+        });
+    });
+}
+
+// Load daily prompt and recent entries when page loads
 document.addEventListener('DOMContentLoaded', () => {
     loadDailyPrompt();
     loadPromptCategories();
+    updateRecentEntriesMenu();
 });

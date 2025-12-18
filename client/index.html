@@ -13,6 +13,44 @@
             <h1>Dear Diary</h1>
         </div>
         
+        <!-- Side Menu -->
+        <div class="side-menu" id="side-menu">
+            <div class="menu-header">
+                <h2>Menu</h2>
+                <button class="close-menu-btn" id="close-menu-btn">×</button>
+            </div>
+            
+            <div class="menu-content">
+                <div class="menu-section">
+                    <h3>Navigation</h3>
+                    <ul class="menu-list">
+                        <li><a href="#" id="new-entry-link" class="menu-link active">New Entry</a></li>
+                        <li><a href="#" id="entries-link" class="menu-link">My Entries</a></li>
+                        <li><a href="#" id="goals-link" class="menu-link">My Goals</a></li>
+                        <li><a href="#" id="analytics-link" class="menu-link">Insights</a></li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <h3>Recent Entries</h3>
+                    <ul class="recent-entries-list" id="recent-entries-menu">
+                        <li class="empty-message">No entries yet</li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <h3>Quick Actions</h3>
+                    <ul class="menu-list">
+                        <li><button class="menu-button" id="new-goal-menu-btn">Create Goal</button></li>
+                        <li><button class="menu-button" id="refresh-prompt-menu-btn">New Prompt</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menu Toggle Button -->
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+        
         <div class="book-pages">
             <!-- Left Page -->
             <div class="page left-page">
@@ -26,13 +64,8 @@
                         <div class="diary-logo">Dear Diary</div>
                     </div>
                     
-                    <div class="navigation-menu">
-                        <ul>
-                            <li><a href="#" id="new-entry-link" class="nav-link active">New Entry</a></li>
-                            <li><a href="#" id="entries-link" class="nav-link">My Entries</a></li>
-                            <li><a href="#" id="goals-link" class="nav-link">My Goals</a></li>
-                            <li><a href="#" id="analytics-link" class="nav-link">Insights</a></li>
-                        </ul>
+                    <div class="welcome-message">
+                        <p>Welcome to your private space for reflection and growth.</p>
                     </div>
                     
                     <div class="quote-section">
@@ -40,6 +73,11 @@
                             "A journal is a place to record your thoughts, feelings, and experiences. 
                             It's a safe space where you can be completely honest with yourself."
                         </blockquote>
+                    </div>
+                    
+                    <div class="page-controls">
+                        <button class="page-btn" id="prev-page-btn">← Previous</button>
+                        <button class="page-btn" id="next-page-btn">Next →</button>
                     </div>
                 </div>
                 

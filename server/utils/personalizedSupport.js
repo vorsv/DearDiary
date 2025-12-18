@@ -1,34 +1,67 @@
-// Personalized support messages based on detected emotions
+// Personalized support messages based on detected emotions with Japanese-inspired wisdom
 const supportMessages = {
   happy: [
-    "It's wonderful to see you're feeling happy today!",
-    "Your positive energy is contagious! Keep shining!",
-    "Cherish these happy moments. They're precious.",
-    "Your happiness brings joy to those around you.",
-    "Keep up the great work on maintaining this positive outlook!"
+    "Your joy is like cherry blossoms in spring - beautiful and fleeting. Cherish this moment.",
+    "Like the sun breaking through clouds, your happiness brings light to the world around you.",
+    "In the Japanese tradition of 'ikigai', your happiness may be hinting at your purpose. What brings you this joy?",
+    "As the Japanese say, 'Fall down seven times, stand up eight.' Your resilience creates this happiness.",
+    "Your positive energy is like a gentle breeze through a bamboo forest - calming and uplifting."
   ],
   sad: [
-    "It's okay to feel sad sometimes. This feeling will pass.",
-    "Remember that it's okay to not be okay. You're not alone.",
-    "Take some time for self-care today. You deserve it.",
-    "This difficult time will make you stronger. Keep going.",
-    "Reach out to someone you trust. Sharing your feelings helps."
+    "Like the changing seasons, sadness is temporary. Even winter gives way to spring.",
+    "The Japanese concept of 'ganbaru' reminds us to persist through difficult times with gentle strength.",
+    "In the practice of 'mono no aware', we find beauty in impermanence. This feeling will pass.",
+    "As bamboo bends in the storm but does not break, your spirit remains strong even in sorrow.",
+    "The Japanese tea ceremony teaches us to find peace in the present moment, even when it's difficult."
   ],
   neutral: [
-    "Taking time to reflect is valuable. Keep journaling!",
-    "Balance is important. Your neutral state is a good foundation.",
-    "Every day doesn't have to be extraordinary. Normal is okay too.",
-    "Use this calm state to plan your next steps.",
-    "A neutral state can be a peaceful place to recharge."
+    "Like still water reflecting the moon, your calm state offers clarity for introspection.",
+    "In the Japanese principle of 'ma', the space between thoughts holds its own quiet wisdom.",
+    "Your neutral state is like the pause between waves - a moment of peaceful potential.",
+    "The Japanese garden teaches us that simplicity can be profound. Rest in this quiet space.",
+    "Like morning mist before the sun rises, your neutrality holds the promise of new understanding."
   ],
   mixed: [
-    "It's normal to have mixed emotions. Life is complex.",
-    "Having mixed feelings shows you're processing your experiences.",
-    "Embrace the complexity of your emotions. It's part of being human.",
-    "These mixed emotions might be telling you something important.",
-    "Give yourself permission to feel all your emotions without judgment."
+    "Like the complexity of a Zen koan, your mixed emotions hold deeper truths waiting to be discovered.",
+    "The Japanese art of 'kintsugi' shows us that golden beauty can emerge from broken pieces.",
+    "In the balance of 'in-yo' (yin-yang), opposing feelings create harmony within you.",
+    "Like a landscape painting with both light and shadow, your complexity creates depth.",
+    "The Japanese practice of 'shoshin' (beginner's mind) invites you to explore these feelings with curiosity."
   ]
 };
+
+// Deeper reflection questions based on emotions
+const reflectionQuestions = {
+  happy: [
+    "What three things contributed to this joy today?",
+    "How can you cultivate more of this feeling in your life?",
+    "Who else might benefit from sharing in this happiness?"
+  ],
+  sad: [
+    "What lesson might this difficult time be teaching you?",
+    "What small act of self-care would feel nurturing right now?",
+    "Who could offer support during this time?"
+  ],
+  neutral: [
+    "What subtle feelings might be hiding beneath this calm?",
+    "What one small change could add color to this neutral state?",
+    "What are you grateful for in this quiet moment?"
+  ],
+  mixed: [
+    "What would you tell a friend experiencing these same emotions?",
+    "Which feeling needs the most attention right now?",
+    "What insight might emerge from sitting with these mixed emotions?"
+  ]
+};
+
+// Encouraging messages with Japanese-inspired wisdom
+const encouragements = [
+  "Like a bonsai that grows slowly but beautifully, your personal growth takes time and patience.",
+  "The Japanese concept of 'wabi-sabi' reminds us that imperfection has its own beauty.",
+  "As the proverb says, 'Better than a thousand days of diligent study is one day with a great teacher.' You are your own great teacher.",
+  "In the practice of 'kaizen' (continuous improvement), small daily steps lead to meaningful change.",
+  "Like Mount Fuji, which appears different from every angle, your perspective shapes your experience."
+];
 
 // Function to get a personalized support message based on emotion
 function getSupportMessage(emotion) {
@@ -37,22 +70,41 @@ function getSupportMessage(emotion) {
   return messages[randomIndex];
 }
 
+// Function to get a reflection question based on emotion
+function getReflectionQuestion(emotion) {
+  const questions = reflectionQuestions[emotion] || reflectionQuestions.neutral;
+  const randomIndex = Math.floor(Math.random() * questions.length);
+  return questions[randomIndex];
+}
+
+// Function to get an encouragement message
+function getEncouragement() {
+  const randomIndex = Math.floor(Math.random() * encouragements.length);
+  return encouragements[randomIndex];
+}
+
 // Function to generate personalized response
-function generatePersonalizedResponse(emotionAnalysis) {
+function generatePersonalizedResponse(emotionAnalysis, entryContent) {
   const { emotion } = emotionAnalysis;
   const supportMessage = getSupportMessage(emotion);
+  const reflectionQuestion = getReflectionQuestion(emotion);
+  const encouragement = getEncouragement();
   
-  // Basic mental health resources
+  // Mental health resources with Japanese-inspired mindfulness practices
   const resources = [
     "Crisis Text Line: Text HOME to 741741",
     "National Suicide Prevention Lifeline: 988",
-    "SAMHSA National Helpline: 1-800-662-4357"
+    "SAMHSA National Helpline: 1-800-662-4357",
+    "Mindfulness practice: Try 5 minutes of focused breathing",
+    "Gratitude exercise: Write down three things you're thankful for"
   ];
   
   return {
     message: supportMessage,
-    resources: emotion === 'sad' ? resources : [],
-    encouragement: "Remember, you're doing better than you think."
+    reflectionQuestion: reflectionQuestion,
+    encouragement: encouragement,
+    resources: emotion === 'sad' ? resources : [resources[3], resources[4]], // Only mindfulness resources for non-sad emotions
+    emotionInsight: `In Japanese culture, emotions are seen as waves - they come and go. Your "${emotion}" feeling is part of the natural flow of life.`
   };
 }
 

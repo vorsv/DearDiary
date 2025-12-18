@@ -1,0 +1,16 @@
+{
+  "id": "1758348932861",
+  "content": "I am feeling great today!",
+  "date": "2025-09-20T06:15:32.861Z",
+  "emotion": {
+    "sentimentScore": 0.8,
+    "emotion": "happy",
+    "intensity": "strong",
+    "analysisDate": "2025-09-20T06:15:32.861Z"
+  },
+  "supportResponse": {
+    "message": "Cherish these happy moments. They're precious.",
+    "resources": [],
+    "encouragement": "Remember, you're doing better than you think."
+  }
+}
